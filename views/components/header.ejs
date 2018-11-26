@@ -1,0 +1,25 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <!--导航栏logo部分-->
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">My Albums</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="/main">全部相册</a></li>
+          <li><a href="/someone_albums?username=<%=username%>">我的相册</a></li>
+          <li><a href="/management">管理相册</a></li>
+          <li><a href="/talk_with">在线聊天</a></li>
+        </ul>
+
+        <form class="navbar-form navbar-right">
+          <% if (username) {%>
+          <img src="<%=head_pic%>" alt="" class="img-circle" id="default">
+          <button type="button" class="btn btn-info" id="newFloder"><a href="/userInfo"><%=username%></a></button>
+          <button class="btn btn-danger"><a href="/web/html/login.html">退出</a></button>
+          <% } else {%>
+          <button type="button" class="btn btn-info" id="newFloder"><a href="/web/html/login.html">登陆</a></button>
+          <% } %>
+        </form>
+        
+      </div>
+</nav>

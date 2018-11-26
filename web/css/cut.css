@@ -1,0 +1,25 @@
+#mask {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, .5);
+}
+#area {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100px;
+	height: 100px;
+	background-size: 758px 400px;
+}
+#dot {
+	position: absolute;
+	right: -5px;
+	bottom: -5px;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background-color: rgba(23, 88, 92);
+}

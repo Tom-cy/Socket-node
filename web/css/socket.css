@@ -1,0 +1,45 @@
+#chat {
+    width: 900px;
+    height: 500px;
+    margin: 40px auto;
+}
+#chat_body {
+    width: 900px;
+    height: 450px;
+    border: 1px solid #ccc;
+    border-bottom: 0px;
+    margin: 0;
+    padding: 30px;
+    box-sizing: border-box;
+    overflow: auto;
+}
+#chat_body li {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+#chat_body li span:nth-child(2) {
+    margin-left: 5px;
+}   
+#chat_footer {
+    width: 904px;
+    height: 50px;
+}
+#input_text {
+    float: left;
+    width: 800px;
+    height: 50px;
+    border-radius: 0px;
+}
+#send {
+    width: 100px;
+    height: 50px;
+    border: 0px;
+    border-radius: 0px;
+    margin-right: 0;
+    padding: 0;
+}
+.online {
+    font-size: 18px;
+    color: black;
+    text-align: center;
+}

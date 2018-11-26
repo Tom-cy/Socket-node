@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>爱玩屎的阿拉蕾</title>
+    <link rel="stylesheet" href="/web/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/web/css/reset.css">
+	<link rel="stylesheet" href="/web/css/index.css">
+    <link rel="stylesheet" href="/web/css/talk_with.css">
+</head>
+
+<body>
+    <div class="bj_img">
+        <img src="../web/imgs/5.jpg" alt="">
+    </div>
+    <% include components/header.ejs %>
+    <div id="content">
+        <div class="container">
+            <div class="chat">
+                <div class="left">
+                    <div class="userInfo">
+                        <div class="userImg"><img src="<%=head_pic%>" alt=""></div>
+                        <div class="userFun">
+                            <h1 class="user_name">
+                                <%=username%>
+                            </h1>
+                        </div>
+                    </div>
+                    <div class="search">
+                        <input type="text" placeholder="联系人" class="user_input_sea">
+                    </div>
+
+                    <div class="user_many_peo">
+                        <ul class="userList" id="userList">
+                            <!-- 每次来人都是进这个ul--li -->
+                        </ul>
+                    </div>
+                </div>
+                <div class="right">
+
+                    <div class="right_head_til">
+                        <h2> 阿拉蕾</h2>
+                    </div>
+                    <div class="right_msg" id="right_msg">
+
+
+                    </div>
+                    <!-- 笑脸 表情 -->
+                    <div id="face">
+                        <div class="container_talk">
+                            <span id="show_face_list"><img src="../web/imgs/12.png" alt=""></span>
+
+                            <!-- 渲染表情 -->
+                            <ul id="face_list" class="hide">
+                                <% for( let i=0 ; i <face_arr.length ; i++){ %>
+                                <li data-name="<%=face_arr[i]%>"><img src="/face/<%=face_arr[i]%>" alt=""></li>
+                                <% } %>
+                            </ul>
+                        </div>
+                        <div class="contain">
+                            <span id="show_face_pic"><img src="../web/imgs/13.png" alt=""></span>
+                            <ul id="pic_list" class="hide">
+
+                            </ul>
+
+                        </div>
+                    </div>
+                    <div class="inputs" id="inputs">
+                        <textarea class="chatInput" id="inp"></textarea>
+                    </div>
+                    <div class="send">
+                        <input type="button" id="send" value="发送">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/web/js/jquery.js"></script>
+    <script>
+        // 获取元素
+        const $userList = $("#userList");
+        // 获取send inp chatLog
+        const $send = $("#send");
+        const $inp = $("#inp");
+        const $right_msg = $("#right_msg");
+        const $show_face_list = $("#show_face_list");
+        const $face_list = $("#face_list");
+        const $content = $("#content");
+        const $show_face_pic = $("#show_face_pic");
+        const $inputs = $("#inputs");
+        const $pic_list = $("#pic_list");
+
+        // 发出请求
+        const socket = io();
+
+        $inputs.click(function (e) {
+            e.stopPropagation();
+            this.style.backgroundColor = ' rgba(0, 0, 0, .2)';
+        })
+        $content.click(function () {
+            $inputs[0].style.backgroundColor = 'rgba(0, 0, 0, 0)';
+
+        })
+
+        // 监听请求是否成功
+        socket.on("connect", function (argument) {
+            // 报道
+            socket.emit("coming", {
+                username: " <%=username%>",
+                head_pic: "<%=head_pic%>"
+            })
+            // 监听someonelogin 事件 
+            socket.on("someonelogin", function (arr) {
+                //    清空当前
+                $userList.html("");
+
+                // 循环渲染  ----监听来的用户并且循环上树
+                for (let i = 0; i < arr.length; i++) {
+                    $userList.append('<li data-user=' + arr[i].username + '><div><img src=" ' + arr[i].head_pic +
+                        ' " alt=""></div><span class="some_user">' + arr[i].username +
+                        '</span><span class="some_con"></span> </li>')
+                }
+
+            })
+
+            // 绑定发送事件 - - 键盘enter 事件
+            document.onkeydown = function (e) {
+                e = e || window.event || arguments.callee.caller.arguments[0];
+                if (e.keyCode === 13) {
+                    $send.trigger("click");
+                }
+            };
+            $send.click(function () {
+                // 获取用户输入的内容/
+
+                let val = $inp.val();
+                val = $.trim(val);
+                // 通过socket连接对象触发事件， 给后端发送消息
+                socket.emit("msg", val);
+                $inp.val("");
+                // 监听发言事件
+            })
+            // 监听listen事件
+            socket.on("listen", function (obj) {
+                if (obj.text === "") {
+                    return;
+                }
+                // 同步到个人栏
+                $('#userList li').each(function (index, value) {
+                    if (obj.username.replace(/\s*/g, '') == $(value).data('user')) {
+                        $(value).find('.some_con').html(obj.text)
+                        return;
+                    }
+                })
+                const dom = '<div class="chatLog"><div class="chat_img"><img src=" ' + obj.head_pic +
+                    '" alt=""></div><div class="chat_content"><div class="chat_time"><span class="chat_now_time">' +
+                    obj.mytime + ' </span><span class="chat_username">' +
+                    obj.username + '</span></div><div class="chat_text">' + obj.text +
+                    '</div></div></div>'
+                $right_msg.append(dom)
+                $right_msg.scrollTop(10000);
+
+            })
+
+            // 点击表情文字切换表情面板
+            $show_face_list.click(function (e) {
+                // 阻止事件冒泡
+                e.stopPropagation();
+                $face_list.toggleClass("hide");
+            })
+
+            // 点击心心切换图片
+            $show_face_pic.click(function () {
+
+                $pic_list.removeClass("hide");
+            })
+            // 点击表情图片时发送
+            $face_list.on("click", "li", function () {
+                const smile = ("<img  src =/" + "face/" + $(this).data("name"));
+                $inp.val($inp.val() + smile + " >")
+            })
+        })
+       
+        // 点击心心图片时发送ajax
+        $show_face_pic.click(function (e) {
+            // 阻止事件冒泡
+            e.stopPropagation();
+            $pic_list.toggleClass("hide");
+            $.ajax({
+                url: "talk_with_two",
+                data: "",
+                type: "get",
+                dataType: "json",
+                success: function (data) {
+                    // 简单模式---看优化
+                    $pic_list.html("");
+                    // 循环格式化模板上树
+                    for (let i = 0; i < data.data.length; i++) {
+                        const dir = data.dir;
+                        const username = data.data[i].username;
+                        const album_name = data.data[i].album_name;
+                        const imgname = data.data[i].imgname;
+
+                        let dom = '<li class="pic_gif"  data-dir ='+dir+' data-username ='+username+' data-album_name ='+album_name+' data-imgname ='+imgname+'><img src="' + dir + '/' + username + '/' + album_name +
+                            '/' + imgname + '"></li>'
+                        
+                        $pic_list.append(dom);
+
+
+
+
+                    } 
+                }
+            })
+        })
+        
+        
+        // 点击表情图片时发送
+        $pic_list.on("click", "li", function () {
+            const smile = ("<li class="+'pic_gif'+" ><img src = "+$(this).data('dir')+ "/"+$(this).data('username')+"/"+
+                $(this).data('album_name')+"/"+$(this).data('imgname')+" ></li>");
+          
+                $inp.val($inp.val()+smile)
+        })
+        
+        // 取消表情显示
+        $content.click(function () {
+            $face_list.addClass("hide");
+        })
+        // 取消图片显示
+        $content.click(function () {
+            $pic_list.addClass("hide");
+        })
+    </script>
+</body>
+
+</html>

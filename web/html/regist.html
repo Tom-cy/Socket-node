@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="/web/css/bootstrap.min.css">
+  	<link rel="stylesheet" href="/web/css/reset.css">
+	<link rel="stylesheet" href="/web/css/login.css">
+</head>
+<body>
+	<div class="container">
+		<br>
+		   <div id="login" class="panel panel-primary">
+			<div class="panel-heading">
+				Login
+			</div>
+			<div class="panel-body">
+                <form id="regist_form">
+                    <div class="form-group">
+                        <label>用户名:</label><input type="text" class="form-control" id="username" placeholder="别起太长了...">
+                        <!-- 提示的控件 -->
+                        <div id="tips"></div>
+                        <label>密码:</label><input type="password" class="form-control" id="password" placeholder="5-10位">
+                    </div>
+                    <a href="/web/html/login.html" class="text-info" id="back">返回登录</a>
+                    <input type="button" value="注册" class="btn btn-primary pull-right" id="regist">
+                </form>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="/web/js/jquery.js"></script>
+	<script type="text/javascript" src="/web/js/strategy.js"></script>
+	<script type="text/javascript">
+        // 获取用户名
+        var $username = $("#username");
+        // 获取密码
+        var $password = $("#password");
+        // 获取注册按钮
+        var $regist = $("#regist");
+        // 返回登录按钮
+        var $back = $("#back");
+
+        // 上锁，都符合要求才发送ajax检验
+        var username_lock = false;
+        var password_lock = false;
+        
+        // 验证用户名
+        $username.on("blur", function() {
+            // 获取用户输入的信息
+            var val = $(this).val();
+            // 非空验证
+            var result = Strategy.use("notEmpty", val);
+            if(result) {
+                // 关锁
+                username_lock = false;
+                // 弹出提示
+                $("#tips").attr("class", "alert alert-warning").html("用户名不能为空！").slideDown(100);
+                return;
+            }
+            // // 通过的话提示消失
+            // $("#tips").slideUp(100);
+            // 发送ajax查看数据空中是否存在
+            $.ajax({
+                url: "/checkName",
+                type: "get",
+                data: {
+                    username: val
+                },
+                dataType: "json",
+                success: function(data) {
+                    username_lock = false;
+                    $("#tips").attr("class", "alert alert-danger").html(data.data).slideDown(100);
+                    // 用户名如果可用
+                    if(!data.error) {
+                        $("#tips").attr("class", "alert alert-success").html(data.data);
+                        username_lock = true;
+                    }
+                }   
+            })
+        })
+        // 点击注册时验证密码
+        $regist.on("click", function() {
+            // 先触发一下验证用户名
+            $username.trigger("blur");
+            // 用户名不符合要求则返回
+            if(!username_lock) {
+                return;
+            }
+            // 获取内容
+            var val = $password.val();
+            var result = Strategy.use("fiveToTen", val);
+            if(result) {
+                alert("请控制密码在5-10位之间!");
+            }
+            // 密码和用户名都符合要求
+            if(!result) {
+                password_lock = true;
+                // 获取正确的用户名和密码
+                var username_val = $("#username").val();
+                var password_val = $("#password").val();
+                // 发ajax提交数据,添加数据到后台数据库
+                $.ajax({
+                    url: "/regist",
+                    type: "post",
+                    data: {
+                        username: username_val,
+                        password: password_val
+                    },
+                    dataType: "json",
+                    success: function(data) {
+                        // console.log(data)
+                        if(!data.error) {
+                            alert("注册成功！！");
+                            location.href = "http://localhost:3000/web/html/login.html";
+                        }
+                    }
+                })
+            }
+        })
+	</script>
+</body>
+</html>

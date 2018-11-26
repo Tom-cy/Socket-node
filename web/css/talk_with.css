@@ -1,0 +1,556 @@
+* {
+    list-style: none;
+}
+
+.container_talk-fluid{
+    position: relative;
+     
+
+}
+.bj_img {
+    margin-top: 50px;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    
+}   
+.bj_img  img{
+    width: 100%;
+    height: 100%;   
+}
+
+a {
+    text-decoration: none;
+}
+
+#header {
+    position: relative;
+    z-index: 1;
+}
+
+.right_head_til h2 {
+    color: #fff;
+}
+
+.chat {
+    border: 1px solid #ccc;
+    width: 705px;
+    height: 500px;
+    margin: auto;
+    overflow: hidden;
+    border-radius: 4px;
+    /* position: absolute; */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.chat .left {
+    position: relative;
+    width: 200px;
+    height: 100%;
+    float: left;
+    background-color: rgba(0, 0, 0, .3);
+
+}
+
+.chat .left .userInfo {
+    position: relative;
+    padding: 18px;
+    display: flex;
+    flex-direction: row;
+}
+
+.chat .left .userInfo .userImg {
+    width: 40px;
+    height: 40px;
+    display: block;
+    flex: 2.4
+}
+
+.chat .left .userInfo .userFun {
+    padding-left: 4px;
+    color: #ffffff;
+    font-size: 14px;
+    flex: 7;
+    line-height: 40px;
+
+}
+
+.chat .left .userInfo .userImg img {
+    width: 100%;
+    height: 100%;
+}
+
+.chat .left .search {
+    position: relative;
+    margin: 0 18px 10px;
+}
+
+.chat .left .search .user_input_sea {
+    display: block;
+    width: 100%;
+    height: 32px;
+    line-height: 32px;
+    border: 0;
+    background-color: #565b63;
+    color: #fff;
+    padding-left: 30px;
+    padding-right: 10px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+
+.chat .left .search::after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 7px;
+    width: 20px;
+    height: 20px;
+    background: url(../imgs/xuebi.png) no-repeat;
+    background-position: -95px -438px;
+
+}
+
+
+
+.chat .left .user_many_peo {
+    position: absolute;
+    top: 120px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow-y: auto;
+    padding: 18px;
+
+}
+
+/* 滚动条样式 */
+.chat .left .user_many_peo::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 4px;
+    /*高宽分别对应横竖滚动条的尺寸*/
+    height: 4px;
+}
+
+.chat .left .user_many_peo::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 0 5px rgba(129, 127, 127, 0.659);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.chat .left .user_many_peo::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 5px rgba(129, 127, 127, 0.659);
+    border-radius: 0;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.chat .left .user_many_peo .userList {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.chat .left .user_many_peo .userList li {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    /* line-height: 40px; */
+    height: 40px;
+    flex: 1;
+    margin-bottom: 5px;
+}
+
+.chat .left .user_many_peo .userList li div {
+    width: 40px;
+}
+
+.chat .left .user_many_peo .userList li span.some_user{
+    position: absolute;
+    padding-left: 4px;
+    left: 40px;
+    color: #ffffff;
+    font-size: 14px;
+
+
+}
+.chat .left .user_many_peo .userList li span.some_con{
+    position: absolute;
+    left: 40px;
+    top: 22px;
+   padding-left: 4px;
+   color: #8fb6e4;
+   font-size: 12px;
+   overflow: hidden;
+   text-overflow:ellipsis; 
+   white-space:nowrap; 
+   width: 120px;
+
+}
+.chat .left .user_many_peo .userList li span.some_con img{
+   width: 20px;
+   height: 20px;
+
+}
+.chat .left .user_many_peo .userList img {
+    width: 100%;
+    height: 100%;
+}
+
+/* ---------------------------------------------------------------------right
+*/
+
+.chat .right {
+    position: relative;
+    width: 500px;
+    height: 100%;
+    float: left;
+    background-color: rgba(129, 127, 127, 0.659);
+}
+
+
+
+
+
+.chat .right .right_head_til {
+    position: relative;
+    padding: 10px 0;
+    line-height: 25px;
+    margin: 0 20px;
+    border-bottom: 1px solid #d6d6d6;
+    /* background-color: #eee; */
+    text-align: center;
+    font-size: 14px;
+}
+
+.chat .right .right_msg {
+    height: 260px;
+    padding: 10px 20px;
+    overflow-y: auto;
+
+}
+
+/* 滚动条样式 */
+.chat .right .right_msg::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 4px;
+    /*高宽分别对应横竖滚动条的尺寸*/
+    height: 4px;
+}
+
+.chat .right .right_msg::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 0 5px rgba(129, 127, 127, 0.659);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.chat .right .right_msg::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 5px rgba(129, 127, 127, 0.659);
+    border-radius: 0;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.chat .right .right_msg .chatLog {
+    margin: 8px auto;
+    margin-bottom: 5px;
+}
+
+.chat .right .right_msg .chatLog .chat_img {
+    float: right;
+    width: 40px;
+    height: 40px;
+    vertical-align: center;
+}
+
+.chat .right .right_msg .chatLog .chat_img img {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+}
+
+.chat .right .right_msg .chatLog .chat_content {
+    margin: 0 55px;
+}
+
+.chat .right .right_msg .chatLog .chat_content::after {
+    content: "";
+    display: table;
+    clear: both;
+
+}
+
+.chat .right .right_msg .chatLog .chat_content .chat_time {
+    text-align: right;
+    font-size: 14px;
+    padding-right: 5px;
+}
+
+.chat .right .right_msg .chatLog .chat_content .chat_time .chat_now_time {
+    padding-right: 15px;
+
+}
+
+.chat .right .right_msg .chatLog .chat_content .chat_time .chat_username {
+    font-size: 14px;
+
+}
+
+.chat .right .right_msg .chatLog .chat_content .chat_text {
+    position: relative;
+    background-color: #b2e281;
+    float: right;
+    line-height: 20px;
+    margin-left: 3px;
+    padding: 10px;
+    font-size: 14px;
+    color: #5f5f5f;
+    word-wrap: break-word;
+    max-width: 100%;
+    border-radius: 5px;
+
+}
+.chat .right .right_msg .chatLog .chat_content .chat_text .pic_gif{
+        width: 135px;
+        height: 130px;
+}
+
+.chat .right .right_msg .chatLog .chat_content .chat_text img{
+    width: 100%;
+    height: 100%;
+
+}
+
+.chat .right .right_msg .chatLog .chat_content .chat_text img {
+    vertical-align: middle;
+}
+
+
+.chat .right .right_msg .chatLog .chat_content .chat_text::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 0 solid transparent;
+    border-right: 10px solid #fff;
+    border-bottom: 15px solid transparent;
+    position: absolute;
+    top: 5px;
+    left: -10px;
+
+    border-left: 10px solid #b2e281;
+    border-right: none;
+    top: 10px;
+    left: 100%;
+
+}
+
+#face {
+    position: relative;
+     
+    padding-left: 30px;
+    height: 40px;
+    margin-right: 20px;
+
+    border-top: 1px solid #ccc;
+}
+
+#face .container_talk {
+     width: 100%;
+     height: 100%;
+}
+
+#face .container_talk #show_face_list {
+    display: block;
+    width: 20px;
+    height: 20px;
+
+}
+
+#face .contain #show_face_pic {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    left: 75px;
+    top: 10px;
+
+}
+
+#face .contain #show_face_pic img {
+    width: 100%;
+    height: 100%;
+
+}
+
+#face #show_face_list img {
+  position: relative;
+
+    width: 100%;
+    height: 100%;
+    margin-top: 10px;
+}
+
+/* --------------------------------------------------------表情分割线 */
+
+#face #face_list {
+    width: 300px;
+    height: 270px;
+    display: flex;
+    flex-wrap: wrap;
+    position: absolute;
+    /* bottom: 100%; */
+    left: 30;
+    bottom: 40px;
+    background-color: rgba(0, 0, 0, 0.575);
+    border-radius: 5px;
+}
+
+#face #face_list li {
+
+    width: 30px;
+    text-align: center;
+    line-height: 30px;
+    box-sizing: border-box;
+}
+
+#face #face_list li:hover {
+    border: 1px solid #ffffff;
+    background-color: rgba(255, 255, 255, 0.4)
+}
+
+#face #face_list li img {
+    vertical-align: middle;
+}
+/* --------------------------------------------------------表情分割线 */
+
+#face #pic_list {
+    overflow-y: auto;
+    border-radius: 5px;
+   width: 275px;
+   height: 275px;
+   display: flex;
+   flex-wrap: wrap;
+   position: absolute;
+   /* bottom: 100%; */
+   left: 80px;
+   bottom: 40px;
+   background-color: rgba(255, 255, 255, .7);
+   border-radius: 5px;
+}
+
+/* 滚动条样式 */
+#face #pic_list::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 4px;
+    /*高宽分别对应横竖滚动条的尺寸*/
+    height: 4px;
+}
+
+#face #pic_list::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 0 5px rgba(129, 127, 127, 0.659);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+#face #pic_list::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 5px rgba(129, 127, 127, 0.659);
+    border-radius: 0;
+    background: rgba(0, 0, 0, 0.3);
+}
+#face #pic_list li {
+   height: 90px;
+   width: 90px;
+   text-align: center;
+   line-height: 90px;
+   box-sizing: border-box;
+}
+
+#face #pic_list li:hover {
+   border: 2px solid rgba(10, 243, 243, 0.959);
+   /* background-color: rgba(10, 243, 243, 0.959) */
+}
+
+#face #pic_list li img {
+   /* vertical-align: middle; */
+   width: 100%;
+   height: 100%;
+
+
+
+}
+
+/* -------------------------------------------------------------------图片分割线 */
+
+
+
+ 
+
+
+.right .inputs {
+    margin: 17px 20px;
+    border-radius: 6px;
+}
+
+
+.right .inputs .chatInput {
+    width: 100%;
+    height: 84px;
+    resize: none;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 14px;
+    padding: 5px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+/* 滚动条样式 */
+.right .inputs .chatInput::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 4px;
+    /*高宽分别对应横竖滚动条的尺寸*/
+    height: 4px;
+}
+
+.right .inputs .chatInput::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 0 5px rgba(129, 127, 127, 0.659);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.right .inputs .chatInput::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 5px rgba(129, 127, 127, 0.659);
+    border-radius: 0;
+    background: rgba(0, 0, 0, 0.3);
+}
+ 
+.right .send {
+    text-align: right;
+    background-color: #5f5f5f powderblue
+}
+
+.right #send {
+    position: absolute;
+    bottom: 10px;
+    right: 19px;
+    ;
+    border: 1px solid #c1c1c1;
+    border-radius: 4px;
+    padding: 3px 30px;
+    font-size: 14px;
+    background-color: #fff;
+    color: #222;
+}

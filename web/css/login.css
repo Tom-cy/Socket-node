@@ -1,0 +1,11 @@
+#tips {
+	display: none;
+}
+#login{ 
+	width:400px;
+	margin: 200px auto;
+}
+#login label {
+	margin-top: 5px;
+	margin-bottom: 10px;
+}

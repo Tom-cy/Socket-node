@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="/web/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/web/css/reset.css">
+	<link rel="stylesheet" href="/web/css/index.css">
+</head>
+<body>
+	<% include components/header.ejs %>
+		<div class="container" id="user_head_pic">
+			<div class="row">
+				<!-- 循环渲染当前文件夹中所有用户的相册列表 -->
+				<% for(var i = 0; i < userArr.length; i++) { %>
+					<div class="col-lg-3 col-md-6">
+						<a href="/someone_albums?username=<%=userArr[i].username%>" class="thumbnail">
+							<img src="<%=userArr[i].head_pic%>" alt="...">
+							<div class="caption"><%=userArr[i].username%></div>
+						</a>
+					</div>
+				<% } %>
+			</div>
+		</div>
+</body>
+</html>

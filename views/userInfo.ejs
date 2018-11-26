@@ -1,0 +1,293 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="/web/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/web/css/reset.css">
+	<link rel="stylesheet" href="/web/css/common.css">
+	<link rel="stylesheet" href="/web/css/index.css">
+	<link rel="stylesheet" href="/web/css/cut.css">
+</head>
+<body>
+	<% include components/header.ejs %>
+	<!-- 头像 -->
+	<div style="margin-top:10px;" class="container">
+	    <div class="row">
+	        <div class="panel panel-default">
+	            <div class="panel-heading" id="panel_heading">修改头像</div>
+	            	<div class="panel-body">
+		               	<div style="border: 5px solid lightblue;width: 150px;height:150px;margin: 5px auto;border-radius: 50%;">
+							<img src="<%=head_pic%>" alt="选择并上传头像" id="avatar_img"
+								 style="width: 140px;height: 140px;left:0;top: 0;border-radius: 50%;"/>
+						</div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	<!-- 上传头像 -->
+	<div class="panel panel-primary" id="head_pic">
+		<div class="panel-heading">
+			<span class="left">上传头像</span>
+			<span class="right" id="right_btn">&times;</span>
+		</div>
+		<div class="upload_head_pic">
+			<div id="avatar">
+				<span>------点击上传图片------</span>
+				<img src="<%=head_pic%>" alt="">
+			</div>
+			<input type="file" id="avatar_file" name="avatar_file" accept="image/jpg,image/png,image/gif" style="width: 760px;height:400px;opacity: 0;position: absolute;left:0;top: 40px;"/>
+		</div>
+		<div class="upload">
+			<button type="button" class="btn btn-success" id="head_btn">裁剪</button>
+			<button type="button" class="btn btn-success" id="change_head_btn">上传</button>
+		</div>
+	</div>
+
+	<!-- 裁剪头像 -->
+	<div class="panel panel-primary" id="caijian">
+		<div class="panel-heading">
+			<span class="left">裁剪头像</span>
+			<span class="right" id="right_btn_a">&times;</span>
+		</div>
+		<div class="upload_head_pic">
+			<div id="avatar_a">
+				<img  alt="" id="area_a">
+				<div id="mask"></div>
+				<div id="area">
+					<div id="dot"></div>
+				</div>
+			</div>
+		</div>
+		<div class="upload">
+			<button type="button" class="btn btn-success" id="cut">剪</button>
+		</div>
+	</div>
+
+	<div style="margin-top:10px;" class="container">
+	    <div class="row">
+	        <div class="panel panel-default">
+	            <div class="panel-heading">修改个人资料</div>
+	            <div class="panel-body">
+	                <div class="row  col-md-offset-3 col-md-6">
+	                        <fieldset>
+	                            <div class="form-group">
+	                                <label class="col-sm-3">新密码</label>
+	                                <div class="col-md-6">
+	                                    <input type="password" id="newPassword" class="form-control" placeholder="新密码" required>
+	                                </div>
+	                            </div><br /><br />
+	                            <div class="form-group">
+	                                <label class="col-md-3">重复新密码</label>
+	                                <div class="col-md-6">
+	                                    <input type="password" id="repeatNewPassword" class="form-control" placeholder="重复新密码" required>
+	                                </div>
+	                            </div><br /><br />
+	                            <div class="form-group">
+	                                <label class="col-md-3">联系电话</label>
+	                                <div class="col-md-6">
+	                                    <input type="text" id="Phone" class="form-control" value="" placeholder="联系电话">
+	                                </div>
+	                            </div><br /><br />
+	                            <div class="form-group">
+	                                <label class="col-md-3">邮箱</label>
+	                                <div class="col-md-6">
+	                                    <input type="text" id="userEmail" class="form-control" value="" placeholder="邮箱">
+	                                </div>
+	                            </div><br /><br />
+	                        </fieldset><br />
+	                        <button type="button" onclick="modUser()" class="btn btn-success">确认保存</button>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+<script type="text/javascript" src="/web/js/jquery.js"></script>
+<script type="text/javascript">
+	// 获取点击按钮  
+	var $change_head_btn = $("#change_head_btn");
+	var $avatar_file = $("#avatar_file");
+	// 获取修改头像点击  点击修改头像  弹出裁剪
+	var $avatar_img = $("#avatar_img");
+	// 获取剪裁框
+	var $head_pic = $("#head_pic");
+	// 点击事件
+	$avatar_img.click(function() {
+		// 点击头像 弹出剪裁
+		$head_pic.show(500).css({"display": "block"});
+	})
+
+	// 点击×关闭裁剪
+	var $right_btn = $("#right_btn");
+	$right_btn.click(function() {
+		$head_pic.hide(500);
+	})
+	var $right_btn_a = $("#right_btn_a");
+	$right_btn_a.click(function() {
+		$caijian.hide(500);
+	})
+	// 图片预览
+	var fileInput = document.querySelector("input[type=file]");
+    var previewImg = document.querySelector("#avatar img");
+    var $avatar_span = $("#avatar span");
+
+	fileInput.addEventListener("change", function () {
+		var file = this.files[0];
+		var reader = new FileReader();
+		// 监听reader对象的的onload事件，当图片加载完成时，把base64编码賦值给预览图片
+		reader.addEventListener("load", function () {
+		   previewImg.src = reader.result;
+		}, false);
+		// 调用reader.readAsDataURL()方法，把图片转成base64
+		if (file) {
+			reader.readAsDataURL(file);
+			$avatar_span.css({"display": "none"});
+		} else {
+			previewImg.src = ""
+			$avatar_span.css({"display": "block"})
+		}
+	}, false);
+	var area_a = document.getElementById("area_a");
+	$change_head_btn.click(function() {
+		// 获取图片 
+		var files = $avatar_file[0].files;
+		// 上传
+		if (files.length === 1) {
+			var formdata = new FormData();
+			formdata.set("head_pic", files[0]);
+			$.ajax({
+				url: "/head_pic",
+				type: "post",
+				data: formdata,
+				dataType: "json",
+				contentType: false,
+				processData: false,
+				success: function(data) {
+					console.log(data.data);
+					area.style.backgroundImage = "url(" + data.data + ")";
+					area_a.src = data.data
+				}
+			})
+		}
+	})
+
+	// 点击裁剪 切换到裁剪页面
+	var $caijian = $("#caijian");
+	var $head_btn = $("#head_btn");
+	$head_btn.click(function() {
+		$head_pic.css({"display": "none"});
+		$caijian.css({"display": "block"})
+	})
+
+	// 获取元素
+	var avatar = document.getElementById("avatar_a");
+	var area = document.getElementById("area");
+	var dot = document.getElementById("dot");
+	var cut = document.getElementById("cut");
+	var header = document.getElementById("header");
+	// 鼠标按下
+	dot.onmousedown = function(e) {
+		e.stopPropagation();
+		// 鼠标位置
+		var mouseX = e.clientX;
+		var mouseY = e.clientY;
+		// area宽高
+		var width = area.clientWidth;
+		var height = area.clientHeight;
+		// 设置mousemove事件
+		document.onmousemove = function(e) {
+			// 设置移动后的位置
+			var moved_x = e.clientX;
+			var moved_y = e.clientY;
+			// 移动的值
+			var result_x = width + moved_x - mouseX;
+			var result_y = height + moved_y - mouseY;
+			// 边界判定
+			if (result_x <= 0) {
+				result_x = 0;
+			} else if (result_x >= avatar.clientWidth - area.offsetLeft){
+				result_x = avatar.clientWidth - area.offsetLeft;
+			}
+			if (result_y <= 0) {
+				result_y = 0;
+			} else if (result_y >= avatar.clientHeight - area.offsetTop) {
+				result_y = avatar.clientHeight - area.offsetTop;
+			}
+			// 设置给area
+			area.style.width = result_x + "px";
+			area.style.height = result_y + "px";
+		}
+	}
+
+	// 鼠标抬起
+	document.onmouseup = function() {
+		this.onmousemove = null;
+	}
+	// area的拖动事件
+	area.onmousedown = function(e) {
+		// 鼠标位置
+		var mouseX = e.clientX;
+		var mouseY = e.clientY;
+		// area的位置
+		var x = area.offsetLeft;
+		var y = area.offsetTop;
+		document.onmousemove = function(e) {
+			// 设置移动后的位置
+			var moved_x = e.clientX;
+			var moved_y = e.clientY;
+			// 计算鼠标移动的值
+			var resultX = x + moved_x - mouseX;
+			var resultY = y + moved_y - mouseY;
+			// 判定
+			if (resultX < 0) {
+					resultX = 0;
+			} else if (resultX >= avatar.clientWidth - area.clientWidth) {
+				resultX = avatar.clientWidth - area.clientWidth
+			} 
+			if (resultY < 0) {
+				resultY = 0;
+			} else if (resultY >= avatar.clientHeight - area.clientHeight) {
+				resultY = avatar.clientHeight - area.clientHeight
+			}
+			area.style.left = resultX + "px";
+			area.style.top = resultY + "px";
+			area.style.backgroundPositionX = - resultX + "px";
+			area.style.backgroundPositionY = - resultY + "px";
+		}
+	}
+
+	cut.onclick = function() {
+		var w = area.clientWidth;
+		var h = area.clientHeight;
+		var x = area.offsetLeft;
+		var y = area.offsetTop;
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function() {
+				if (xhr.readyState === 4) {
+					var text = xhr.responseText;
+					var obj = new Function("return " + text)();
+					console.log(obj.error)
+					if (!obj.error) {
+						// 说明成功
+						console.log("成功")
+						// 更换图片
+						// 发送请求 请求新的图片 
+						var img = new Image();
+						img.src = "<%=head_pic%>?" + Math.random()
+						console.log(img)
+						var bigImg = avatar.getElementsByTagName("img")[0];
+						avatar.replaceChild(img.cloneNode(), bigImg);
+						var smallImg = header.getElementsByTagName("img")[1];
+						smallImg.parentNode.replaceChild(img.cloneNode(), smallImg);
+					} else {
+						console.log("失败")
+					}
+				}
+			}
+			xhr.open("get", "/caijian?x=" + x + "&y=" + y + "&w=" + w + "&h=" + h, true);
+			xhr.send();
+	}
+</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="/web/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/web/css/reset.css">
+	<link rel="stylesheet" href="/web/css/index.css">
+</head>
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top">
+		<div class="container-fluid">
+			<!--导航栏logo部分-->
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">My Albums</a>
+			</div>
+			<% if(username === targetUsername) { %>
+				<ul class="nav navbar-nav">
+					<li><a href="/main">全部相册</a></li>
+					<li class="active"><a href="/someone_albums?username=<%=username%>">我的相册</a></li>
+					<li><a href="/management">管理相册</a></li>
+					<li><a href="/socket">在线聊天</a></li>
+				</ul>
+			<% }else { %>
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="/main">全部相册</a></li>
+					<li><a href="/someone_albums?username=<%=username%>">我的相册</a></li>
+					<li><a href="/management">管理相册</a></li>
+				</ul>
+			<% } %>
+			<form class="navbar-form navbar-right">
+				<% if (username) {%>
+				<img src="<%=head_pic%>" alt="" class="img-circle" id="default">
+				<button type="button" class="btn btn-info" id="newFloder"><a href="/userInfo">
+						<%=username%></a></button>
+				<button class="btn btn-danger"><a href="/web/html/login.html">退出</a></button>
+				<% } else {%>
+				<button type="button" class="btn btn-info" id="newFloder"><a href="/web/html/login.html">登陆</a></button>
+				<% } %>
+			</form>
+	
+		</div>
+	</nav>
+	<div class="container">
+		<div class="row">
+			<% for(var i = 0; i < albumsArr.length; i++) { %>
+				<div class="col-lg-3 col-md-6">
+					<a href="/someone_pictures?username=<%=targetUsername%>&album_name=<%=albumsArr[i]%>" class="thumbnail">
+						<img style="width:150px; height:150px;" src="/web/imgs/documents.jpg" alt="...">
+						<div class="caption"><%=albumsArr[i]%></div>
+					</a>
+				</div>
+			<% } %>
+		</div>
+	</div>
+</body>
+</html>

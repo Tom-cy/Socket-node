@@ -1,0 +1,477 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="/web/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/web/css/reset.css">
+	<link rel="stylesheet" href="/web/css/common.css">
+	<link rel="stylesheet" href="/web/css/index.css">
+	<link rel="stylesheet" href="/web/css/management.css">
+</head>
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top">
+		<div class="container-fluid" id="header">
+		  <!--导航栏logo部分-->
+		  <div class="navbar-header">
+			<a class="navbar-brand" href="#">My Albums</a>
+		  </div>
+		  <ul class="nav navbar-nav">
+				<li><a href="/main">全部相册</a></li>
+				<li><a href="/someone_albums?username=<%=username%>">我的相册</a></li>
+				<li class="active"><a href="/management">管理相册</a></li>
+				<li><a href="/talk_with">在线聊天</a></li>
+		  </ul>
+		  <form class="navbar-form navbar-right">
+			<% if (username) {%>
+			<img src="<%=head_pic%>" alt="" class="img-circle" id="default">
+			<button type="button" class="btn btn-info" id="newFloder"><a href="/userInfo"><%=username%></a></button>
+			<button class="btn btn-danger"><a href="/web/html/login.html">退出</a></button>
+			<% } else {%>
+			<button type="button" class="btn btn-info" id="newFloder"><a href="/web/html/login.html">登陆</a></button>
+			<% } %>
+		  </form>
+		  
+		</div>
+  </nav>
+	<div class="content" id="content">
+		<ul class="left">	
+			<li class="crt-abl" id="crt_abl">
+				<h3>创建相册</h3>
+			</li>
+			<li class="crt-list" id="crt_list">
+				<h3>删除图片</h3>
+			</li>
+			<li class="crt-pic" id="crt_pic">
+				<h3>上传图片</h3>
+			</li>
+		</ul>
+		<div class="center">
+			<a id="center" class="hide" href=""></a>
+		</div>
+		<div class="right">
+			<!--  创建相册 -->
+			 <div class="crt-abl-con hide" id="crt_abl_con">
+			 	<div class="crt-abl-con-top">
+			 		<h3 class="">新建相册</h3>
+			 		<span class="crt-abl-con-top-txt" id="crt_abl_con_top_txt">&times;</span>
+			 	</div>
+			 	<div class="crt-abl-con-content">
+			 		<h4>相册名称：</h4>
+			 		<input type="text" id="text_album_name">
+			 	</div>
+			 	<div class="crt-abl-con-footer">
+			 		<button id="footer_add">点击添加</button>
+			 		<button id="footer_close">取消</button>
+
+			 	</div>
+			 	<div class="hint hide" id="hint"></div>
+			 	<div class="hint hint1 hide" id="hint1"></div>
+			 </div>
+			<!-- 删除图片 -->
+			 	<ul class="crt_list_con hide" id="crt_list_con">
+					<% for(var i = 0; i < arr.length; i++) { %>
+			 			<li id="album_name_ls" class="album_name_pic">
+				 			<div class="album_name_alb">
+				 				<h3 class="crt_list_con_txt"><%= arr[i]%></h3>
+				 			</div>
+				 			<span class="album_name_del">&times;</span>
+			 			</li>	
+					<% } %>
+				</ul>
+				<div  class="imgs_lists hide" id="imgs_lists">
+					<button class="imgs_lists_btn" id="imgs_lists_btn">返回相册列表</button>
+					<ul class="imgs_list_s"  id="imgs_list_s">
+						<!-- <li><img src="../web/imgs/up.png"></li>
+						<li><img src="../web/imgs/up.png"></li>
+						<li><img src="../web/imgs/up".png"></li>
+						<li><img src="../web/imgs/up.png"></li>
+						<li><img src="../web/imgs/up.png"></li> -->
+					</ul>
+				</div>
+
+			<!-- 上传图片 -->
+			<div class="upload_file hide" id="upload_file">
+				<!-- <h4>选择相册列表</h4> -->
+				<form id="form" class="upload_file_fr" enctype="multipart/form-data">
+					<div class="form">
+						<h4 class="upload_file_txt">请选择相册：</h4>
+						<select class="upload_file_li" name="album_name" id="upload_select">
+							<% for(var i = 0; i < arr.length; i++) { %>
+								<option value="<%=arr[i]%>"><%=arr[i]%></option>
+							<% } %>
+						</select>
+					</div>
+
+					<div class="form_upload">
+						<div class="upload_pic">
+							<div class="upload_pic_txt" id="avatar_pic">
+								<span>------点击上传图片------</span>
+								<img src="" alt="">
+							</div>
+							<input type="file" id="avatar_pic_file" name="avatar_pic_file" multiple accept="image/*" style="width: 100%	;height:400px; opacity: 0;"/>
+							<ul class="hide show" id="file_img">
+
+							</ul>
+
+							<div class="hint hide" id="upload_hint"></div>
+			 				<div class="hint hint1 hide" id="upload_hint1"></div>
+						</div>
+						<div class="upload_btn">
+							<button type="button" class="btn btn-success upload_btn" id="change_btn">上传</button>
+						</div>
+					</div>
+
+				</form>
+			</div>
+		</div>
+		
+
+	</div>
+	<script type="text/javascript" src="/web/js/jquery.js"></script>
+	<script type="text/javascript">
+		// 相册列表
+		var $album_name_ls = $("#crt_list_con .album_name_pic");
+
+		//获取容器元素
+		var content = $("#content")[0];
+		var header = $("#header")[0];
+		// 获取header的高度
+		var header_h = header.clientHeight;
+		// 获取视口高度
+		var client_h = document.documentElement.clientHeight;
+		// 更改content高度
+		content.style.height = client_h - header_h - 2 + "px";
+
+		
+		// 获取返回按钮
+		var $center = $("#center");
+		
+		// 获取相册列表按钮
+		var $crt_list = $("#crt_list");
+		// 获取相册列表页面
+		var $crt_list_con = $("#crt_list_con");
+		
+
+		// 获取添加按钮
+		var $footer_add = $("#footer_add");
+		// 更改添加按钮背景色
+		$footer_add.css("backgroundColor","#5BC0DE");
+
+		// 获取创建相册按钮
+		var $crt_abl = $("#crt_abl");
+		// 获取新建相册弹窗
+		var $crt_abl_con = $("#crt_abl_con");
+
+		// 获取上传图片模块
+		var $upload_file = $("#upload_file");
+		// 获取上传图片按钮
+		var $crt_pic = $("#crt_pic");
+		// 获取选择相册下拉框
+		var $upload_select = $("#upload_select");
+		// 获取表单元素
+		var avatar_pic_file = document.getElementById("avatar_pic_file")
+
+		// 获取相册列表页面
+		var $imgs_lists = $("#imgs_lists");
+
+		// 获取相册列表模板
+		var $imgs_list_s = $("#imgs_list_s");
+
+		// 点击创建相册
+		$crt_abl.click(function() {
+			$imgs_lists.addClass("hide");
+			// 隐藏上传图片模块
+			$upload_file.addClass("hide");
+			// 显示创建相册模块
+			$crt_abl_con.show(500).removeClass("hide");
+			// 隐藏相册列表
+			$crt_list_con.addClass("hide");	
+			// 显示返回按钮
+			$center.removeClass("hide");
+		})
+		
+
+
+		// 获取X号
+		var $crt_abl_con_top_txt = $("#crt_abl_con_top_txt");
+		// 点击X号
+		$crt_abl_con_top_txt.click(function() {
+			$crt_abl_con.hide(500);
+		})
+
+		// 获取取消按钮
+		var $footer_close = $("#footer_close");
+		// 点击取消按钮
+		$footer_close.click(function() {
+			$crt_abl_con.hide(500);
+		})
+
+		// 获取相册输入框
+		var $text_album_name = $("#text_album_name");
+
+		// 获取提示框
+		var $hint = $("#hint");
+		var $hint1 = $("#hint1");
+
+		// 添加相册，发送AJAX
+		$footer_add.click(function() {
+			// 获取输入框内容
+			var album_name = $text_album_name.val();
+			// 发送ajax
+			$.ajax({
+				url: "/create",
+				data: {
+					album_name: album_name
+				},
+				type: "get",
+				dataType: "json",
+				success: function(data) {
+					if(!data.error) {
+						//显示添加成功时候的提示框
+						setTimeout(function() {
+							$hint.html(data.data).fadeIn(200).removeClass("hide");
+							$text_album_name.val("");
+						},700);
+						// 新添加的相册显示在相册列表中
+						$crt_list_con.append("<li class='album_name_pic' id='album_name_ls'><div class='album_name_alb'><h3 class='crt_list_con_txt'>" + album_name + "</h3></div><span class='album_name_del'>&times;</span></li>");
+					
+						
+						// 新添加的相册显示在上传图片下拉框
+						$upload_select.append("<option value=" + album_name + ">" + album_name + "</option>");
+
+						// 相册列表延时出现
+						setTimeout(function() {
+							$hint.fadeOut(200);
+							$crt_abl_con.hide(300);
+							//刷新页面
+							window.location.href = "/management";
+						},1700);
+						
+
+					}else {
+						// 显示添加失败提示框
+						setTimeout(function() {
+							$hint1.html(data.data).fadeIn(200).removeClass("hide");
+							$text_album_name.val("");
+						},700);
+					}
+					// 一定的时间提示框消失
+					setTimeout(function() {
+						$hint1.fadeOut(500);
+					}, 3400);
+				}
+			})
+		})
+
+		// 点击相册列表按钮
+		$crt_list.click(function() {
+			// 隐藏上传图片模块
+			$upload_file.addClass("hide");
+			// 隐藏创建相册
+			$crt_abl_con.hide(500);
+			// 显示返回按钮
+			$center.removeClass("hide");
+
+			$crt_list_con.removeClass("hide");
+		})
+
+
+
+		// 查看图片
+		$album_name_ls.on("click", ".album_name_alb", function() {
+			//获取相册名称
+			var album_name = $(this).find('h3').html();
+			$imgs_lists.removeClass("hide");
+
+			// 发送ajax请求
+			$.ajax({
+				url: "/show_album_imgs",
+				data: {
+					album_name: album_name
+				},
+				type: "get",
+				dataType: "json",
+				success: function(data) {
+					if(!data.error) {
+						for(var i = 0; i < data.data.length; i++) {
+							$imgs_list_s.append("<li><img src=" + data.data[i] + "><span>&times;</span></li>");
+						}
+						
+					}
+				}	
+		
+			})
+		})
+
+		//获取点击返回相册列表按钮
+		var $imgs_lists_btn = $("#imgs_lists_btn");
+		
+		// 返回相册列表
+		$imgs_lists_btn.click(function() {
+			$imgs_list_s.html("");
+			$imgs_lists.addClass("hide");
+
+			// $crt_list_con.removeClass("hide");	
+		})
+
+		// 删除相册
+		$album_name_ls.on("click", ".album_name_del", function() {
+			// 获取被删除的相册的名称
+			var album_name = $(this).prev().children('h3').html();
+			console.log(album_name);
+			var me = $(this);
+			//  发送ajax
+			$.ajax({
+				url: "/delete_album",
+				data: {
+					album_name: album_name
+				},
+				type: "get",
+				dataType: "json",
+				success: function(data) {
+					console.log(data);
+					if(!data.error) {
+						me.parent().remove();
+						$album_name_ls.find("h3").each(function(i, value) {
+							if ($(value).val() === album_name) {
+								$(value).remove();
+							} 
+						})
+						$upload_select.find("option").each(function(i, value) {
+							if ($(value).val() === album_name) {
+								$(value).remove();
+							} 
+						})
+					}
+				}
+			})
+		})
+		
+		// 点击上传图片
+		$crt_pic.click(function() {
+			$imgs_lists.addClass("hide");
+			// 隐藏创建相册
+			$crt_abl_con.hide(500);
+			// 隐藏相册列表
+			$crt_list_con.addClass("hide");	
+			// 显示返回按钮
+			$center.removeClass("hide");
+			// 显示上传图片模块
+			$upload_file.removeClass("hide");
+		})
+
+		// 获取预览图片模块
+		var file_img = document.getElementById("file_img")
+		// 设置事件
+		avatar_pic_file.onchange = function() {
+			var formData = new FormData($("#form")[0]);
+			// 获取文件信息
+			var file = formData.getAll("avatar_pic_file");
+
+			// 循环file
+			file.forEach(function(value, index) {
+
+				// 初始化fileReader
+				var fr = new FileReader();	
+
+				// 调用fr.readAsDataURL
+				fr.readAsDataURL(value);
+				
+				// // 监听onload事件
+				fr.onload = function() {
+					// 生成img元素
+					var img = new Image();
+					// 设置src
+					img.src = fr.result;
+					// 创建li元素
+					var li = $("<li class='file_img_up'></li>");
+					// 追加到li
+					li.append(img);
+					// 上树
+					$("#file_img").append(li);
+					// 预览图片显示
+					$("#file_img").removeClass('hide');
+				}
+			})
+		}
+
+		//  获取上传按钮
+		var $change_btn = $("#change_btn");
+		// 获取提示文本
+		var $upload_hint =  $("#upload_hint");
+		var $upload_hint1 = $("#upload_hint1");
+		// 点击上传时发送ajax，上传数据
+		$change_btn.click(function() {
+			// 初始化formData
+			var formData = new FormData($("#form")[0]);
+			// 获取文件信息
+			var file = formData.getAll("avatar_pic_file");
+
+			//预览图片的内容消失
+			$("#file_img").html("");
+			// 预览图片消失
+			$("#file_img").addClass('hide');
+			// avatar_pic_file值为空
+			$("#avatar_pic_file").val("");
+
+			if (file.length === 1 && file[0].name === "") {
+				alert("请选择图片");
+				return;
+			}
+			// 发送ajax
+			$.ajax({
+				url: "/uploadFile",
+				data: formData,
+				type: "post",
+				dataType: "json",
+				contentType: false,
+				processData: false,
+				success: function(data) {
+					console.log(data.data)
+					if(!data.error) {
+						setTimeout(function() {
+							$upload_hint.html(data.data).fadeIn(500).removeClass("hide");
+						},1000);
+					}else {
+						setTimeout(function() {
+							$upload_hint1.html(data.data).fadeIn(500).removeClass("hide");
+						},1000);
+					}
+
+					setTimeout(function() {
+							$upload_hint.fadeOut(500);
+							$upload_hint1.fadeOut(500);
+						},2500);
+				}
+			})
+		});
+
+
+
+
+		// 删除图片事件(委托模式添加)
+		$imgs_list_s.on("click", ("#imgs_list_s li span"), function() {
+			var img_src_delete = $(this).prev().attr("src");
+			var $_this_img = $(this).prev();
+			$.ajax({
+				url: "delete_pic",
+				data: {
+					src: img_src_delete
+				},
+				type: "get",
+				dataType: "json",
+				success: function(data) {
+					// 成功则同时在页面上移除dom
+					if(!data.error) {
+						$_this_img.parent().remove();
+					}
+				}
+			})
+		})
+	</script>
+
+
+
+</body>
+</html>
